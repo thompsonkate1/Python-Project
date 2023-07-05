@@ -2,4 +2,4 @@
 !pip install matplotlib
 !pip install scikit-learn
 !pip install seaborn
-
+import numpy as np
