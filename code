@@ -5,5 +5,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import scikit-learn as sklearn
+import seaborn
 
 # Still need to import datasets and install/import any other packages. We also need to create our machine-learning model.
