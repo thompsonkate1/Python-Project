@@ -2,11 +2,28 @@
 !pip install matplotlib
 !pip install scikit-learn
 !pip install seaborn
+!pip install pandas
 
 import numpy as np
 import matplotlib.pyplot as plt
 import scikit-learn as sklearn
-import seaborn
+import seaborn as sns
+import pandas as pd
 
 # Still need to import datasets and install/import any other packages. We also need to create our machine-learning model.
 # We most likely need a regression model, and this will probably be from the module scikit-learn.
+
+from google.colab import files
+uploaded=files.upload()
+graduation_rate=pd.read_csv("graduation_rate.csv")
+IPR=pd.read_csv("IPR.csv")
+print(graduation_rate.head(5))
+print(IPR.head(5))
+print(graduation_rate.columns.to_list())
+print(IPR.columns.to_list())
+
+gradratepairwise=sns.pairplot(graduation_rate)
+
+satactcolgpa=plt.axes(projection='3d')
+z=graduation_rate["college gpa"]
+satactcolgpa.scatter3D(x,y,z)
