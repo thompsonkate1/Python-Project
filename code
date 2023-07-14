@@ -24,6 +24,9 @@ print(IPR.columns.to_list())
 
 gradratepairwise=sns.pairplot(graduation_rate)
 
+
 satactcolgpa=plt.axes(projection='3d')
-z=graduation_rate["college gpa"]
-satactcolgpa.scatter3D(x,y,z)
+sat = graduation_rate['SAT total score']
+act = graduation_rate['ACT composite score']
+colgpa=graduation_rate["college gpa"]
+satactcolgpa.scatter3D(sat,act,colgpa)
