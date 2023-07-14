@@ -22,6 +22,10 @@ print(IPR.head(5))
 print(graduation_rate.columns.to_list())
 print(IPR.columns.to_list())
 
+# Use fig.add_axes() to create a plot that incorporates family income vs. both ACT and SAT scores.
+
+# Use sns.factorplot() to look at the distribution of scores within family income brackets.
+
 gradratepairwise=sns.pairplot(graduation_rate)
 
 #This is making a 3D plot that compares SAT and ACT score to college GPA.
