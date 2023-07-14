@@ -24,7 +24,7 @@ print(IPR.columns.to_list())
 
 gradratepairwise=sns.pairplot(graduation_rate)
 
-
+#This is making a 3D plot that compares SAT and ACT score to college GPA.
 satactcolgpa=plt.axes(projection='3d')
 sat = graduation_rate['SAT total score']
 act = graduation_rate['ACT composite score']
