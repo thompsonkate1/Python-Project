@@ -88,27 +88,24 @@ for income in parentalincomelist:
   IPRvalue=(income/medianhouseholdincome)*100
   KaggleIPRvalues.append(IPRvalue)
 
-#Everything above this point won't need to be repeated in order to create additional models.
 #This code block is actually creating our linear regression model (for IPR to SAT).
 IPRtrainer = np.array(KaggleIPRvalues).reshape((-1, 1))
 SATtrainer = np.array(graduation_rate["SAT total score"].to_list())
 SATpredictor = LinearRegression().fit(IPRtrainer,SATtrainer)
 
-#I'm just going to calculate the R score to see how well it fits.
+#Calculated the R score to see how well the model fits.
 Rscore=SATpredictor.score(IPRtrainer,SATtrainer)
 print("R score: {}".format(Rscore))
 
-#And now I am going to create a dictionary that keeps track of the R score for each predictor/model that I make.
+#Creating a dictionary that keeps track of the R score for each predictor/model that was created.
 Rscoresdict={}
 Rscoresdict["SAT Predictor"]=Rscore
 print(Rscoresdict)
 
-#I am not going to be worrying about any sort of real data from our data set right now. I'm just going to see if the model sort of works :)
-#My previous code worked and I'm literally so proud
+#Checking to verify that the model works.
 SATprediction=SATpredictor.predict(np.array([100]).reshape((-1, 1)))
 print(SATprediction)
 
-#Sweet. That worked. Now I need to figure out how to make it do that for every single IPR in the whole data set...
 def IPRtoSAT():
   n=0
   for incomepovertyratio in IPR["IPR_EST"].tolist():
@@ -117,25 +114,21 @@ def IPRtoSAT():
     IPR.at[n, "SAT Score Prediction"] = predictedSATscore
     n+=1
 
-
-#Dude. Did that for real just work??? (No syntax errors!)
 #Calling the function.
 IPRtoSAT()
 
 print(IPR.head(5))
 
-#Imma be risky and try to amalgamate all of the previous code into one code box in this notebook. Wish me luck!
-#This is actually creating a whole separate model though, this time to predict ACT score.
-#This code block is create a new linear regression model (for IPR to ACT).
+#This code block is creating a new linear regression model (for IPR to ACT).
 IPRtrainer = np.array(KaggleIPRvalues).reshape((-1, 1))
 ACTtrainer = np.array(graduation_rate["ACT composite score"].to_list())
 ACTpredictor = LinearRegression().fit(IPRtrainer,ACTtrainer)
 
-#I'm just going to calculate the R score to see how well it fits.
+#Calculating the R score to see how well the model fits.
 Rscore=ACTpredictor.score(IPRtrainer,ACTtrainer)
 print("R score: {}".format(Rscore))
 
-#And now I am going to update the Rscoresdict.
+#Updating the Rscoresdict.
 Rscoresdict["ACT Predictor"]=Rscore
 print(Rscoresdict)
 #-----------------------------------------------
@@ -151,16 +144,16 @@ IPRtoACT()
 print(IPR.head())
 
 
-#This code block is create a new linear regression model (for IPR to college GPA).
+#This code block is creating a new linear regression model (for IPR to college GPA).
 IPRtrainer = np.array(KaggleIPRvalues).reshape((-1, 1))
 colGPAtrainer = np.array(graduation_rate["college gpa"].to_list())
 colGPApredictor = LinearRegression().fit(IPRtrainer,colGPAtrainer)
 
-#I'm just going to calculate the R score to see how well it fits.
+#Calculating the R score to see how well it fits.
 Rscore=colGPApredictor.score(IPRtrainer,colGPAtrainer)
 print("R score: {}".format(Rscore))
 
-#And now I am going to update the Rscoresdict.
+#Updating the Rscoresdict.
 Rscoresdict["College GPA Predictor"]=Rscore
 print(Rscoresdict)
 #-----------------------------------------------
@@ -175,16 +168,16 @@ def IPRtoColGPA():
 IPRtoColGPA()
 print(IPR.head())
 
-#This code block is create a new linear regression model (for IPR to years to graduate).
+#This code block creates a new linear regression model (for IPR to years to graduate).
 IPRtrainer = np.array(KaggleIPRvalues).reshape((-1, 1))
 yearstrainer = np.array(graduation_rate["years to graduate"].to_list())
 yearspredictor = LinearRegression().fit(IPRtrainer,yearstrainer)
 
-#I'm just going to calculate the R score to see how well it fits.
+#Calculating the R score to see how well it fits.
 Rscore=yearspredictor.score(IPRtrainer,yearstrainer)
 print("R score: {}".format(Rscore))
 
-#And now I am going to update the Rscoresdict.
+#Updating the Rscoresdict.
 Rscoresdict["Years Predictor"]=Rscore
 print(Rscoresdict)
 #-----------------------------------------------
@@ -200,16 +193,16 @@ IPRtoYears()
 print(IPR.head())
 
 
-#This code block is create a new linear regression model (for IPR to high school GPA).
+#Creating a new linear regression model (for IPR to high school GPA).
 IPRtrainer = np.array(KaggleIPRvalues).reshape((-1, 1))
 hsGPAtrainer = np.array(graduation_rate["high school gpa"].to_list())
 hsGPApredictor = LinearRegression().fit(IPRtrainer,hsGPAtrainer)
 
-#I'm just going to calculate the R score to see how well it fits.
+#Calculating the R score to see how well it fits.
 Rscore=hsGPApredictor.score(IPRtrainer,hsGPAtrainer)
 print("R score: {}".format(Rscore))
 
-#And now I am going to update the Rscoresdict.
+#Updating the Rscoresdict.
 Rscoresdict["High School GPA Predictor"]=Rscore
 print(Rscoresdict)
 #-----------------------------------------------
@@ -226,7 +219,7 @@ print(IPR.head())
 
 #-----------------------------------------------
 #Histograms and Graphs Begin Now
-#I am going to plot histograms of the predicted data to see if, for example, predicted SAT scores for our ~100,000 schools skew high
+#Plotting histograms of the predicted data to see if, for example, predicted SAT scores for our ~100,000 schools skew high
 #This is the histogram for SAT Score Prediction
 predictedSAThist= plt.hist(IPR["SAT Score Prediction"], bins=50, alpha=0.5, histtype='stepfilled', color='steelblue',edgecolor='none')
 plt.xlabel("Predicted Average SAT Score")
@@ -257,8 +250,8 @@ plt.xlabel("Predicted Average High School GPA")
 plt.ylabel("Number of Schools")
 plt.title("High School GPA Prediction Distribution")
 
-#I am going to create graphs of IPR vs. predicted value for all of our models
-#I'll start with the SAT Score Prediction for now
+#Creating graphs of IPR vs. predicted value for all of our models
+#Starting with the SAT Score Prediction for now
 predictedSATgraph=plt.plot(IPR["IPR_EST"],IPR["SAT Score Prediction"])
 plt.xlabel("School IPR")
 plt.ylabel("School's Predicted Average SAT Score")
@@ -298,7 +291,7 @@ print(IPR["LAT"][2])
 parentalincomelist=graduation_rate["parental income"].tolist()
 parentaleducationlist=[]
 
-#I'm creating a way to assign a numeric value to parental educational attainment and then create a list containing those values.
+#Created a way to assign a numeric value to parental educational attainment and then create a list containing those values.
 #The for loop is iterating through the parental education column of our dataset and creating a new, numeric version of the data.
 for degree in graduation_rate["parental level of education"]:
   if degree == "some high school":
@@ -315,17 +308,16 @@ for degree in graduation_rate["parental level of education"]:
     parentaleducationlist.append(5)
 
 #Everything above this point won't need to be repeated in order to create additional models.
-#Techically I just repeated it from my single/simple linear regression models, but I want to be able to run this code and have it work w/o having to run the other box.
 #This code block is actually creating our multiple linear regression model (for college GPA).
 bivariatetrainer=np.array(list(zip(parentalincomelist,parentaleducationlist))).reshape((-1,2))
 colGPAtrainer = np.array(graduation_rate["college gpa"].to_list())
 individualcolGPApredictor = LinearRegression().fit(bivariatetrainer,colGPAtrainer)
 
-#I'm just going to calculate the R score to see how well it fits.
+#Calculating the R score to see how well it fits.
 Rscore=individualcolGPApredictor.score(bivariatetrainer,colGPAtrainer)
 print("R score: {}".format(Rscore))
 
-#And now I am going to create a dictionary that keeps track of the R score for each predictor/model that I make.
+#Creating a dictionary that keeps track of the R score for each predictor/model that I make.
 multivarRscoresdict={}
 multivarRscoresdict["Individual College GPA Predictor"]=Rscore
 print(multivarRscoresdict)
@@ -334,15 +326,15 @@ print(individualcolGPApredictor.predict([[100000,5]])) #I'm just seeing if the m
 
 #This second model is going to take the same independent variables as before, but the output will be predicted years to graduate college.
 
-#This code block is actually creating our multiple linear regression model (for years to graduate college).
+#Creating our multiple linear regression model (for years to graduate college).
 yearstrainer = np.array(graduation_rate["years to graduate"].to_list())
 individualyearspredictor = LinearRegression().fit(bivariatetrainer,yearstrainer)
 
-#I'm just going to calculate the R score to see how well it fits.
+#Calculating the R score to see how well it fits.
 Rscore=individualyearspredictor.score(bivariatetrainer,yearstrainer)
 print("R score: {}".format(Rscore))
 
-#And now I am going to update dictionary that keeps track of the R score for each predictor/model that I make.
+#Updating dictionary that keeps track of the R score for each predictor/model.
 multivarRscoresdict["Individual Years Predictor"]=Rscore
 print(multivarRscoresdict)
 
@@ -363,4 +355,4 @@ def collegedestiny():
     printstatement.update({"Years to Graduate College":int(futureyears)})
   return print(printstatement)
 
-collegedestiny() #Meeting your fate
+collegedestiny()
