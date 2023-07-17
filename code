@@ -13,12 +13,14 @@ parental income, divide by the median USA income, and then that’s the IPR for 
 !pip install scikit-learn
 !pip install seaborn
 !pip install pandas
+!pip install scipy
 
 import numpy as np
 import matplotlib.pyplot as plt
 import scikit-learn as sklearn
 import seaborn as sns
 import pandas as pd
+import scipy
 
 from google.colab import files
 uploaded=files.upload()
