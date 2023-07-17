@@ -31,23 +31,46 @@ print(IPR.head(5))
 print(graduation_rate.columns.to_list())
 print(IPR.columns.to_list())
 
-familyIncome = graduation_rate['parental income']
-incomeVsACTScores = plt.scatter(familyIncome, act)  # Income vs ACT scores
+for column in graduation_rate.columns.to_list():
+  print(column)
 
+sat = graduation_rate['SAT total score']
+act = graduation_rate['ACT composite score']
+familyIncome = graduation_rate['parental income']
+
+SATvsACT=plt.scatter(act,sat), plt.xlabel("SAT total score"), plt.ylabel("ACT composite Score"), plt.title("SAT Score vs. ACT Score") 
+incomeVsACTScores = plt.scatter(familyIncome, act)  # Income vs ACT scores
 incomeVsSATScores = plt.scatter(familyIncome, sat) #Income vs SAT scores
+
+gradratepairwise=sns.pairplot(graduation_rate)
 
 fig = plt.figure()
 plotIncomeAndSAT = fig.add_axes([1, 1, 1, 1])
 plotIncomeAndSAT.plot(familyIncome, sat)
 
-plotIncomeAndACT = fig.add_axes([1, 0.45, 1, 0.5])
+plotIncomeAndACT = fig.add_axes([1, 0, 1, 1])
 plotIncomeAndACT.plot(familyIncome, act)
+plt.show() #We can see that the plots for family income vs. SAT scores and ACT scores are very similar.
 
+plotSAT = sns.regplot(data=graduation_rate, x='parental income', y='SAT total score')
+slope, intercept, r, p, sterr = scipy.stats.linregress(x=plotSAT.get_lines()[0].get_xdata(),
+                                                       y=plotSAT.get_lines()[0].get_ydata())
+print("The linear regression equation is y =", str(slope) + "x", "+", intercept)
+
+plotACT = sns.regplot(data=graduation_rate, x='parental income', y='ACT composite score')
+slope, intercept, r, p, sterr = scipy.stats.linregress(x=plotACT.get_lines()[0].get_xdata(),
+                                                       y=plotACT.get_lines()[0].get_ydata())
+print("The linear regression equation is y =", str(slope) + "x", "+", intercept)
+
+#Factor plot
+sns.factorplot(data=graduation_rate, x='parental income', y='ACT composite score')
 plt.show()
 
-# Use sns.factorplot() to look at the distribution of scores within family income brackets.
+#Other factor plot
+sns.factorplot(data=graduation_rate, x='parental income', y='SAT total score')
+plt.show() 
 
-gradratepairwise=sns.pairplot(graduation_rate)
+#We can see a large spread of test scores within each income bracket.
 
 #This is making a 3D plot that compares SAT and ACT score to college GPA.
 satactcolgpa=plt.axes(projection='3d')
