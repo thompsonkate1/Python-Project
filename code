@@ -22,8 +22,6 @@ import seaborn as sns
 import pandas as pd
 import scipy
 
-from google.colab import files
-uploaded=files.upload()
 graduation_rate=pd.read_csv("graduation_rate.csv")
 IPR=pd.read_csv("IPR.csv")
 print(graduation_rate.head(5))
