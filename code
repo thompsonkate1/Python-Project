@@ -1,11 +1,5 @@
 """
-Three-step plan to success:
-1) Analyze the data of our Kaggle 1000 to find all of the correlations (pairplot, then line of best fit, then error bars)
-2) Train a model (using sklearn; the only independent variable will be income, because all we have is IPR)
-3) Use the model to predict the average SAT, ACT, college GPA, and years to graduate college
-of our 100,000 schools (basically, sklearn will generate the value from the regression
-line that matches the school’s IPR value. The IPR values will be indexed to the parental income levels tho // ie. Take the
-parental income, divide by the median USA income, and then that’s the IPR for a given student)
+In this project, we analyzed educational data to find correlations between family income and standardized test scores (as well as other educational metrics like college GPA). We also created several models to predict a school's average standardized test scores and other things based off their income-to-poverty ratio.
 """
 
 !pip install numpy
