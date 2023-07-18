@@ -35,10 +35,19 @@ act = graduation_rate['ACT composite score']
 familyIncome = graduation_rate['parental income']
 
 SATvsACT=plt.scatter(act,sat), plt.xlabel("SAT total score"), plt.ylabel("ACT composite Score"), plt.title("SAT Score vs. ACT Score") 
-incomeVsACTScores = plt.scatter(familyIncome, act)  # Income vs ACT scores
-incomeVsSATScores = plt.scatter(familyIncome, sat) #Income vs SAT scores
 
 gradratepairwise=sns.pairplot(graduation_rate)
+plt.savefig("pairwise.png")
+
+incomeVsACTScores = plt.scatter(familyIncome, act)  # Income vs ACT scores
+plt.xlabel("Family Income")
+plt.ylabel("ACT Composite Score")
+plt.title("Income vs. ACT Scores")
+
+incomeVsSATScores = plt.scatter(familyIncome, sat) #Income vs SAT scores
+plt.xlabel("Family Income")
+plt.ylabel("SAT Total Score")
+plt.title("Income vs. SAT Scores")
 
 fig = plt.figure()
 plotIncomeAndSAT = fig.add_axes([1, 1, 1, 1])
@@ -46,17 +55,23 @@ plotIncomeAndSAT.plot(familyIncome, sat)
 
 plotIncomeAndACT = fig.add_axes([1, 0, 1, 1])
 plotIncomeAndACT.plot(familyIncome, act)
-plt.show() #We can see that the plots for family income vs. SAT scores and ACT scores are very similar.
+
+plt.xlabel("Family Income")
+plotIncomeAndACT.set_ylabel("ACT Scores")
+plotIncomeAndSAT.set_ylabel("SAT Scores")
+plotIncomeAndSAT.set_title("Family Income vs. Standardized Test Scores")
+
+fig = plt.show() #We can see that the plots for family income vs. SAT scores and ACT scores are very similar.
 
 plotSAT = sns.regplot(data=graduation_rate, x='parental income', y='SAT total score')
 slope, intercept, r, p, sterr = scipy.stats.linregress(x=plotSAT.get_lines()[0].get_xdata(),
                                                        y=plotSAT.get_lines()[0].get_ydata())
-print("The linear regression equation is y =", str(slope) + "x", "+", intercept)
+print("The linear regression equation is\n y =", str(slope) + "x", "+", intercept)
 
 plotACT = sns.regplot(data=graduation_rate, x='parental income', y='ACT composite score')
 slope, intercept, r, p, sterr = scipy.stats.linregress(x=plotACT.get_lines()[0].get_xdata(),
                                                        y=plotACT.get_lines()[0].get_ydata())
-print("The linear regression equation is y =", str(slope) + "x", "+", intercept)
+print("The linear regression equation is \n y =", str(slope) + "x", "+", intercept)
 
 #Factor plot
 sns.factorplot(data=graduation_rate, x='parental income', y='ACT composite score')
