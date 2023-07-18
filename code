@@ -2,10 +2,6 @@
 In this project, we analyzed educational data to find correlations between family income and standardized test scores (as well as other educational metrics like college GPA). We also created several models to predict a school's average standardized test scores and other things based off their income-to-poverty ratio.
 """
 
-'''
-Correlational work remaining: GPA stuff, years to graduate stuff, more plots (jointplot?)
-'''
-
 !pip install numpy
 !pip install matplotlib
 !pip install scikit-learn
