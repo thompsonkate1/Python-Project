@@ -110,30 +110,34 @@ plt.show()
 #in order to fill the list KaggleIPRvalues in the following for loop.
 from sklearn.linear_model import LinearRegression
 parentalincomelist=graduation_rate["parental income"].tolist()
-medianhouseholdincome=70784
+povertylevel=30000
+#Since our Kaggle dataset deals with parental income, but our dataset of ~100,000 schools contains IPR values, we need to find a way to equate parental income to IPR in order to generate IPR values for our model.
+#The number of $30,000 as the poverty level operates on the assumption that every one of our Kaggle students lived in a family of four.
+#The $30,000 is the Federal Poverty Level for 2023 for a family of four.
 KaggleIPRvalues=[]
 
 #This for loop is filling a list with our Kaggle "IPR values"
 for income in parentalincomelist:
-  IPRvalue=(income/medianhouseholdincome)*100
+  IPRvalue=(income/povertylevel)*100
   KaggleIPRvalues.append(IPRvalue)
 
+#Everything above this point won't need to be repeated in order to create additional models.
 #This code block is actually creating our linear regression model (for IPR to SAT).
 IPRtrainer = np.array(KaggleIPRvalues).reshape((-1, 1))
 SATtrainer = np.array(graduation_rate["SAT total score"].to_list())
 SATpredictor = LinearRegression().fit(IPRtrainer,SATtrainer)
 
-#Calculated the R score to see how well the model fits.
+#I'm just going to calculate the R score to see how well it fits.
 Rscore=SATpredictor.score(IPRtrainer,SATtrainer)
 print("R score: {}".format(Rscore))
 
-#Creating a dictionary that keeps track of the R score for each predictor/model that was created.
+#And now I am going to create a dictionary that keeps track of the R score for each predictor/model that I make.
 Rscoresdict={}
 Rscoresdict["SAT Predictor"]=Rscore
 print(Rscoresdict)
 
 #Checking to verify that the model works.
-SATprediction=SATpredictor.predict(np.array([100]).reshape((-1, 1)))
+SATprediction=SATpredictor.predict(np.array([800]).reshape((-1, 1)))
 print(SATprediction)
 
 def IPRtoSAT():
@@ -256,11 +260,45 @@ plt.xlabel("Predicted Average SAT Score")
 plt.ylabel("Number of Schools")
 plt.title("SAT Score Prediction Distribution")
 
+#Calculating a bunch of statistical data to display on the figure
+SATmax="{:.5f}".format(float(max(IPR["SAT Score Prediction"])))
+SATmin="{:.5f}".format(float(min(IPR["SAT Score Prediction"])))
+import statistics
+SATmean="{:.5f}".format(float(statistics.mean(IPR["SAT Score Prediction"])))
+SATmedian="{:.5f}".format(float(statistics.median(IPR["SAT Score Prediction"])))
+SATmode="{:.5f}".format(float(statistics.mode(IPR["SAT Score Prediction"])))
+SATstats='''Max: {}
+Min: {}
+Mean: {}
+Median: {}
+Mode: {} '''.format(SATmax, SATmin, SATmean, SATmedian, SATmode)
+x_coord = max(IPR["SAT Score Prediction"])
+y_coord = np.max(predictedSAThist[0])
+plt.text(x_coord, y_coord, SATstats, ha='right', va='top')
+
+
 #This is the histogram for ACT Score Prediction
 predictedACThist=plt.hist(IPR["ACT Score Prediction"], bins=50, alpha=0.5, histtype='stepfilled', color='steelblue',edgecolor='none')
 plt.xlabel("Predicted Average ACT Score")
 plt.ylabel("Number of Schools")
 plt.title("ACT Score Prediction Distribution")
+
+#Calculating a bunch of statistical data to display on the figure
+ACTmax="{:.5f}".format(float(max(IPR["ACT Score Prediction"])))
+ACTmin="{:.5f}".format(float(min(IPR["ACT Score Prediction"])))
+import statistics
+ACTmean="{:.5f}".format(float(statistics.mean(IPR["ACT Score Prediction"])))
+ACTmedian="{:.5f}".format(float(statistics.median(IPR["ACT Score Prediction"])))
+ACTmode="{:.5f}".format(float(statistics.mode(IPR["ACT Score Prediction"])))
+ACTstats='''Max: {}
+Min: {}
+Mean: {}
+Median: {}
+Mode: {} '''.format(ACTmax, ACTmin, ACTmean, ACTmedian, ACTmode)
+x_coord = max(IPR["ACT Score Prediction"])
+y_coord = np.max(predictedACThist[0])
+plt.text(x_coord, y_coord, ACTstats, ha='right', va='top')
+
 
 #This is the histogram for College GPA Prediction
 predictedcolGPAhist=plt.hist(IPR["College GPA Prediction"], bins=50, alpha=0.5, histtype='stepfilled', color='steelblue',edgecolor='none')
@@ -268,11 +306,45 @@ plt.xlabel("Predicted Average College GPA")
 plt.ylabel("Number of Schools")
 plt.title("College GPA Prediction Distribution")
 
+#Calculating a bunch of statistical data to display on the figure
+colGPAmax="{:.5f}".format(float(max(IPR["College GPA Prediction"])))
+colGPAmin="{:.5f}".format(float(min(IPR["College GPA Prediction"])))
+import statistics
+colGPAmean="{:.5f}".format(float(statistics.mean(IPR["College GPA Prediction"])))
+colGPAmedian="{:.5f}".format(float(statistics.median(IPR["College GPA Prediction"])))
+colGPAmode="{:.5f}".format(float(statistics.mode(IPR["College GPA Prediction"])))
+colGPAstats='''Max: {}
+Min: {}
+Mean: {}
+Median: {}
+Mode: {} '''.format(colGPAmax, colGPAmin, colGPAmean, colGPAmedian, colGPAmode)
+x_coord = max(IPR["College GPA Prediction"])
+y_coord = np.max(predictedcolGPAhist[0])
+plt.text(x_coord, y_coord, colGPAstats, ha='right', va='top')
+
+
 #This is the histogram for Years Prediction
 predictedyearshist=plt.hist(IPR["Years Prediction"], bins=50, alpha=0.5, histtype='stepfilled', color='steelblue',edgecolor='none')
 plt.xlabel("Predicted Average Years to Graduate College")
 plt.ylabel("Number of Schools")
 plt.title("Years to Graduate Prediction Distribution")
+
+#Calculating a bunch of statistical data to display on the figure
+yearsmax="{:.5f}".format(float(max(IPR["Years Prediction"])))
+yearsmin="{:.5f}".format(float(min(IPR["Years Prediction"])))
+import statistics
+yearsmean="{:.5f}".format(float(statistics.mean(IPR["Years Prediction"])))
+yearsmedian="{:.5f}".format(float(statistics.median(IPR["Years Prediction"])))
+yearsmode="{:.5f}".format(float(statistics.mode(IPR["Years Prediction"])))
+yearsstats='''Max: {}
+Min: {}
+Mean: {}
+Median: {}
+Mode: {} '''.format(yearsmax, yearsmin, yearsmean, yearsmedian, yearsmode)
+x_coord = 2.5*min(IPR["Years Prediction"]) #I'm trying to have the text not overlap with the bars
+y_coord = np.max(predictedyearshist[0])
+plt.text(x_coord, y_coord, colGPAstats, ha='right', va='top')
+
 
 #This is the histogram for HS GPA Prediction
 predictedhsGPAhist=plt.hist(IPR["HS GPA Prediction"], bins=50, alpha=0.5, histtype='stepfilled', color='steelblue',edgecolor='none')
@@ -280,33 +352,65 @@ plt.xlabel("Predicted Average High School GPA")
 plt.ylabel("Number of Schools")
 plt.title("High School GPA Prediction Distribution")
 
+#Calculating a bunch of statistical data to display on the figure
+hsGPAmax="{:.5f}".format(float(max(IPR["HS GPA Prediction"])))
+hsGPAmin="{:.5f}".format(float(min(IPR["HS GPA Prediction"])))
+import statistics
+hsGPAmean="{:.5f}".format(float(statistics.mean(IPR["HS GPA Prediction"])))
+hsGPAmedian="{:.5f}".format(float(statistics.median(IPR["HS GPA Prediction"])))
+hsGPAmode="{:.5f}".format(float(statistics.mode(IPR["HS GPA Prediction"])))
+hsGPAstats='''Max: {}
+Min: {}
+Mean: {}
+Median: {}
+Mode: {} '''.format(hsGPAmax, hsGPAmin, hsGPAmean, hsGPAmedian, hsGPAmode)
+x_coord = max(IPR["HS GPA Prediction"])
+y_coord = np.max(predictedhsGPAhist[0])
+plt.text(x_coord, y_coord, hsGPAstats, ha='right', va='top')
+
 #Creating graphs of IPR vs. predicted value for all of our models
 #Starting with the SAT Score Prediction for now
+#I am going to create graphs of IPR vs. predicted value for all of our models
+#I'll start with the SAT Score Prediction for now
 predictedSATgraph=plt.plot(IPR["IPR_EST"],IPR["SAT Score Prediction"])
 plt.xlabel("School IPR")
 plt.ylabel("School's Predicted Average SAT Score")
 plt.title("IPR to Predicted Average SAT Score")
+slopeSAT = "{:.5f}".format(float(SATpredictor.coef_)) #It was outputting way too many decimals, so I'm shortening the slope and intercept to just 5 decimal places
+interceptSAT = "{:.5f}".format(SATpredictor.intercept_)
+plt.text(np.max(IPR["IPR_EST"]), np.max(IPR["SAT Score Prediction"]), "Equation: y = {}x + {}".format(slopeSAT, interceptSAT), ha='right', va='top') #I am displaying the equation of the model on the figure/graph
 
 predictedACTgraph=plt.plot(IPR["IPR_EST"],IPR["ACT Score Prediction"])
 plt.xlabel("School IPR")
 plt.ylabel("School's Predicted Average ACT Score")
 plt.title("IPR to Predicted Average ACT Score")
-
+slopeACT = "{:.5f}".format(float(ACTpredictor.coef_))
+interceptACT = "{:.5f}".format(ACTpredictor.intercept_)
+plt.text(np.max(IPR["IPR_EST"]), np.max(IPR["ACT Score Prediction"]), "Equation: y = {}x + {}".format(slopeACT, interceptACT), ha='right', va='top')
 
 predictedcolGPAgraph=plt.plot(IPR["IPR_EST"],IPR["College GPA Prediction"])
 plt.xlabel("School IPR")
 plt.ylabel("School's Students' Predicted Average College GPA")
 plt.title("IPR to College GPA")
+slopecolGPA = "{:.5f}".format(float(colGPApredictor.coef_))
+interceptcolGPA = "{:.5f}".format(colGPApredictor.intercept_)
+plt.text(np.max(IPR["IPR_EST"]), np.max(IPR["College GPA Prediction"]), "Equation: y = {}x + {}".format(slopecolGPA, interceptcolGPA), ha='right', va='top')
 
 predictedyearsgraph=plt.plot(IPR["IPR_EST"],IPR["Years Prediction"])
 plt.xlabel("School IPR")
 plt.ylabel("School's Students' Predicted Average Years to Graduate College")
 plt.title("IPR to Years to Graduate College")
+slopeyears = "{:.5f}".format(float(yearspredictor.coef_))
+interceptyears = "{:.5f}".format(yearspredictor.intercept_)
+plt.text(np.max(IPR["IPR_EST"]), np.max(IPR["Years Prediction"]), "Equation: y = {}x + {}".format(slopeyears, interceptyears), ha='right', va='top')
 
 predictedhsGPA=plt.plot(IPR["IPR_EST"],IPR["HS GPA Prediction"])
 plt.xlabel("School IPR")
 plt.ylabel("School's Students' Predicted Average High School GPA")
 plt.title("IPR to High School GPA")
+slopehsGPA = "{:.5f}".format(float(hsGPApredictor.coef_))
+intercepthsGPA = "{:.5f}".format(hsGPApredictor.intercept_)
+plt.text(np.max(IPR["IPR_EST"]), np.max(IPR["HS GPA Prediction"]), "Equation: y = {}x + {}".format(slopehsGPA, intercepthsGPA), ha='right', va='top')
 
 #This was me just testing something at one point. IDK where it initally was.
 print(graduation_rate["parental income"].tolist())
@@ -321,7 +425,7 @@ print(IPR["LAT"][2])
 parentalincomelist=graduation_rate["parental income"].tolist()
 parentaleducationlist=[]
 
-#Created a way to assign a numeric value to parental educational attainment and then create a list containing those values.
+#I'm creating a way to assign a numeric value to parental educational attainment and then create a list containing those values.
 #The for loop is iterating through the parental education column of our dataset and creating a new, numeric version of the data.
 for degree in graduation_rate["parental level of education"]:
   if degree == "some high school":
@@ -338,51 +442,56 @@ for degree in graduation_rate["parental level of education"]:
     parentaleducationlist.append(5)
 
 #Everything above this point won't need to be repeated in order to create additional models.
+#Techically I just repeated it from my single/simple linear regression models, but I want to be able to run this code and have it work w/o having to run the other box.
 #This code block is actually creating our multiple linear regression model (for college GPA).
 bivariatetrainer=np.array(list(zip(parentalincomelist,parentaleducationlist))).reshape((-1,2))
 colGPAtrainer = np.array(graduation_rate["college gpa"].to_list())
 individualcolGPApredictor = LinearRegression().fit(bivariatetrainer,colGPAtrainer)
 
-#Calculating the R score to see how well it fits.
+#I'm just going to calculate the R score to see how well it fits.
 Rscore=individualcolGPApredictor.score(bivariatetrainer,colGPAtrainer)
 print("R score: {}".format(Rscore))
 
-#Creating a dictionary that keeps track of the R score for each predictor/model that I make.
+#And now I am going to create a dictionary that keeps track of the R score for each predictor/model that I make.
 multivarRscoresdict={}
 multivarRscoresdict["Individual College GPA Predictor"]=Rscore
 print(multivarRscoresdict)
 
-print(individualcolGPApredictor.predict([[100000,5]])) #I'm just seeing if the model works
+print(individualcolGPApredictor.predict([[100000,5]])) #I'm just seeing if the model outputs some sort of reasonable value.
 
 #This second model is going to take the same independent variables as before, but the output will be predicted years to graduate college.
 
-#Creating our multiple linear regression model (for years to graduate college).
+#This code block is actually creating our multiple linear regression model (for years to graduate college).
 yearstrainer = np.array(graduation_rate["years to graduate"].to_list())
 individualyearspredictor = LinearRegression().fit(bivariatetrainer,yearstrainer)
 
-#Calculating the R score to see how well it fits.
+#I'm just going to calculate the R score to see how well it fits.
 Rscore=individualyearspredictor.score(bivariatetrainer,yearstrainer)
 print("R score: {}".format(Rscore))
 
-#Updating dictionary that keeps track of the R score for each predictor/model.
+#And now I am going to update dictionary that keeps track of the R score for each predictor/model that I make.
 multivarRscoresdict["Individual Years Predictor"]=Rscore
 print(multivarRscoresdict)
 
 print(individualyearspredictor.predict([[100000,5]])) #I'm just seeing if the model outputs some sort of reasonable value.
      
-#This is going to create a model that determines your "college destiny" based on your parents' income and education level.
+#This is going to create a function that determines your "college destiny" based on your parents' income and education level.
 def collegedestiny():
-  futurecolGPA=0
-  futureyears=0
+  '''
+  This will ask for user input and then output your "college destiny" (predicted college GPA and predicted years to graduate college) on the basis of your parents' income and education level.
+  '''
+  futurecolGPA=0.0
+  futureyears=0.0
   printstatement={}
-  userparentalincome=int(input("What is your parents' income? Do not use commas."))
-  userparentaleducation=int(input("What is your parents' level of education? Input '0' for some high school, '1' for high school, '2' for associate's degree, '3' for some college, '4' for bachelor's degree, and '5' for master's degree."))
-  if input("Would you like to predict your future college GPA? If so, type 'yes'.").strip().lower()=="yes"or"yep"or"sure": #accounting for users not reading directions
+  userparentalincome=float(input("What is your parents' income? Do not use commas."))
+  userparentaleducation=float(input("What is your parents' level of education? Input '0' for some high school, '1' for high school, '2' for associate's degree, '3' for some college, '4' for bachelor's degree, and '5' for master's degree."))
+  if input("Would you like to predict your future college GPA? If so, type 'yes'.").strip().lower() in ["yes","yep","sure"]: #accounting for users not reading directions
     futurecolGPA=individualcolGPApredictor.predict([[userparentalincome,userparentaleducation]])
-    printstatement.update({"Future College GPA":int(futurecolGPA)})
-  if input("Would you like to predict the years it will take you to graduate college? If so, type 'yes'.").strip().lower()=="yes"or"yep"or"sure":
+    printstatement.update({"Future College GPA":float(futurecolGPA)})
+  if input("Would you like to predict the years it will take you to graduate college? If so, type 'yes'.").strip().lower() in ["yes","yep","sure"]:
     futureyears=individualyearspredictor.predict([[userparentalincome,userparentaleducation]])
-    printstatement.update({"Years to Graduate College":int(futureyears)})
+    printstatement.update({"Years to Graduate College":float(futureyears)})
   return print(printstatement)
 
 collegedestiny()
+help(collegedestiny)
