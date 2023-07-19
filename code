@@ -29,6 +29,8 @@ for column in graduation_rate.columns.to_list():
 sat = graduation_rate['SAT total score']
 act = graduation_rate['ACT composite score']
 familyIncome = graduation_rate['parental income']
+collegeGPA = graduation_rate['college gpa']
+yearsToGrad = graduation_rate['years to graduate']
 
 SATvsACT=plt.scatter(act,sat), plt.xlabel("SAT total score"), plt.ylabel("ACT composite Score"), plt.title("SAT Score vs. ACT Score") 
 
@@ -58,6 +60,18 @@ plotIncomeAndSAT.set_ylabel("SAT Scores")
 plotIncomeAndSAT.set_title("Family Income vs. Standardized Test Scores")
 
 fig = plt.show() #We can see that the plots for family income vs. SAT scores and ACT scores are very similar.
+
+#Income vs. college GPA.
+plt.scatter(familyIncome, collegeGPA)
+plt.xlabel("Parental Income")
+plt.ylabel("College GPA")
+plt.title("Income vs. College GPA")
+
+#Income vs. years to graduate college.
+plt.scatter(familyIncome, yearsToGrad)
+plt.xlabel("Parental Income")
+plt.ylabel("Years to Graduate College")
+plt.title("Income vs. Time in College")
 
 plotSAT = sns.regplot(data=graduation_rate, x='parental income', y='SAT total score')
 slope, intercept, r, p, sterr = scipy.stats.linregress(x=plotSAT.get_lines()[0].get_xdata(),
