@@ -94,11 +94,12 @@ plt.show()
 #We can see a large spread of test scores within each income bracket.
 
 #This is making a 3D plot that compares SAT and ACT score to college GPA.
-satactcolgpa=plt.axes(projection='3d')
-sat = graduation_rate['SAT total score']
-act = graduation_rate['ACT composite score']
-colgpa=graduation_rate["college gpa"]
-satactcolgpa.scatter3D(sat,act,colgpa)
+#This all has #'s because it wasn't as useful as we thought and didn't end up getting used.
+#satactcolgpa=plt.axes(projection='3d')
+#sat = graduation_rate['SAT total score']
+#act = graduation_rate['ACT composite score']
+#colgpa=graduation_rate["college gpa"]
+#satactcolgpa.scatter3D(sat,act,colgpa)
 
 #---------------------------------------------------------------------
 #Linear Regression Begins Now
